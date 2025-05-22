@@ -20,7 +20,7 @@ Getting your board ID:
 2. Go to the board you wish to upload to
 3. Copy the ID of the board from the URL. (The number after "/boards/")
 
-Next to get your token and group ID:
+Next to get your token:
 1. Click on your profile
 2. Go to "Developers"
 3. Copy your token from the "My access tokens" section.
