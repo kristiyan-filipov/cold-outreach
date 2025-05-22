@@ -19,10 +19,12 @@ Getting your board ID:
 1. Log into monday.com
 2. Go to the board you wish to upload to
 3. Copy the ID of the board from the URL. (The number after "/boards/")
+
 Next to get your token and group ID:
 1. Click on your profile
 2. Go to "Developers"
 3. Copy your token from the "My access tokens" section.
+
 And lastly for your group ID:
 1. Again from "Developers", go to the "API playground" section
 2. Paste and run this code, but replace the 123456789 with your board ID:
