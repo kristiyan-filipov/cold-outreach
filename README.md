@@ -28,6 +28,8 @@ Next to get your token and group ID:
 And lastly for your group ID:
 1. Again from "Developers", go to the "API playground" section
 2. Paste and run this code, but replace the 123456789 with your board ID:
+
+```
 {
   boards(ids: 123456789) {
     name
@@ -37,5 +39,7 @@ And lastly for your group ID:
     }
   }
 }
+```
+
 3. You should now get a response containing all of the groups in your board, copy the ID of the group you want to upload to.
 
