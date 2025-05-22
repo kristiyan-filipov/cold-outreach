@@ -1,4 +1,5 @@
 import os
+import sys
 import base64
 import json
 from base64 import urlsafe_b64decode
@@ -9,7 +10,15 @@ from googleapiclient.discovery import build
 import ai_evaluation
 import upload_to_monday
 
-CONFIG_FILE = 'config.json'
+def external_path(filename):
+    """Return path to filename next to executable or script."""
+    if getattr(sys, 'frozen', False):
+        base_path = os.path.dirname(sys.executable)
+    else:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_path, filename)
+
+CONFIG_FILE = external_path('config.json')
 
 def load_or_prompt_config():
     config = {}
@@ -46,19 +55,21 @@ def _decode_base64(data: str) -> str:
     return base64.urlsafe_b64decode(data.encode('UTF-8')).decode('UTF-8', errors='replace')
 
 def authenticate_gmail():
+    TOKEN_FILE = external_path('token.json')
+    CREDENTIALS_FILE = external_path('credentials.json')
+
     creds = None
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists(TOKEN_FILE):
+        creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS_FILE, SCOPES)
             creds = flow.run_local_server(port=0)
-        with open('token.json', 'w') as token:
+        with open(TOKEN_FILE, 'w') as token:
             token.write(creds.to_json())
     return build('gmail', 'v1', credentials=creds)
-
 
 def get_n_emails(service, n):
     def _parse_payload(parts):
